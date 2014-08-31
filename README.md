@@ -1,6 +1,6 @@
 ##zhihu-parser
 
-parse zhihu question page
+parse zhihu question page and zhihu daily.
 
 NB: it's beta version now, more test required.
 
