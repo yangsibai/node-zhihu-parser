@@ -10,19 +10,23 @@ _isZhihuQuestion = exports.isZhihuQuestion = (url)->
 	return pattern.test(url)
 
 ###
+    detect url is zhihu daily
+###
+_isZhihuDaily = exports.isZhihuDaily = (url)->
+	pattern = /daily\.zhihu\.com\/story\/\d+/i
+	return pattern.test(url)
+
+###
     download page
 ###
 exports.download = (url, cb)->
-	if url and _isZhihuQuestion(url)
-		request url, (err, response, body)->
-			if err
-				cb err
-			else if response.statusCode isnt 200
-				cb new Error("http error,code:#{response.statusCode}")
-			else
-				cb null, body.toString()
-	else
-		cb new Error("url '#{url}' is not zhihu question page")
+	request url, (err, response, body)->
+		if err
+			cb err
+		else if response.statusCode isnt 200
+			cb new Error("http error,code:#{response.statusCode}")
+		else
+			cb null, body.toString()
 
 ###
     remove attributes
