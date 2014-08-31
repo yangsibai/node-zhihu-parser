@@ -1,5 +1,5 @@
 {
-	"name": "node-zhihu-parser",
+	"name": "zhihu-parser",
 	"version": "0.0.1",
 	"description": "zhihu question page parser",
 	"main": "lib/index.js",

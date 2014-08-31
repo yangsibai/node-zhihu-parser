@@ -8,5 +8,4 @@ describe "parser test", ()->
 		console.dir nodeParser
 		nodeParser.parse url, (err, article)->
 			should(err).not.exist
-			console.dir article
 			done()

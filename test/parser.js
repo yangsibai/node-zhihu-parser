@@ -15,7 +15,6 @@
       console.dir(nodeParser);
       return nodeParser.parse(url, function(err, article) {
         should(err).not.exist;
-        console.dir(article);
         return done();
       });
     });
