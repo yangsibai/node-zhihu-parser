@@ -1,0 +1,30 @@
+{
+	"name": "node-zhihu-parser",
+	"version": "0.0.1",
+	"description": "zhihu question page parser",
+	"main": "lib/index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yangsibai/node-zhihu-parser"
+	},
+	"keywords": [
+		"zhihu",
+		"question",
+		"parser",
+		"readability"
+	],
+	"author": "yangsibai",
+	"license": "GPL3",
+	"bugs": {
+		"url": "https://github.com/yangsibai/node-zhihu-parser/issues"
+	},
+	"dependencies": {
+		"cheerio": "^0.17.0",
+		"request": "^2.40.0",
+		"underscore": "^1.7.0"
+	},
+	"devDependencies": {
+		"mocha": "^1.21.4",
+		"should": "^4.0.4"
+	}
+}
