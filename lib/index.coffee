@@ -30,15 +30,18 @@ _parseQuestion = (url, cb)->
 				cb err
 			else
 				$ = cheerio.load(content)
-				page = [];
 
-				title = $('#zh-question-title').text().trim();
-				question = $("#zh-question-detail").html().trim();
-				page.push('<div>' + question + '</div>');
-				page.push('<hr>');
+				title = $('#zh-question-title').text().trim()
+				question = $("#zh-question-detail").html().trim()
+
+				tagElems = $(".zm-item-tag")
+
+				tags = []
+				tagElems.each (i, el)->
+					tags.push $(el).text().trim()
 
 				answersArr = []
-				answers = $('.zm-item-answer');
+				answers = $('.zm-item-answer')
 				answers.each ()->
 					node = $(this)
 					authorInfo = node.find('.zm-item-answer-author-wrap').text().trim()
@@ -48,13 +51,14 @@ _parseQuestion = (url, cb)->
 					util.pullOutRealPath(answerDetail)
 					util.trimAttrs(answerDetail)
 
-					answersarr.push
+					answersArr.push
 						author: util.getAuthor(authorInfo)
 						content: answerDetail.html().trim()
 
 				article =
 					title: title
 					question: question
+					tags: tags
 					answers: answersArr
 
 				cb null, article
@@ -73,22 +77,22 @@ _parseDaily = (url, cb)->
 				cb err
 			else
 				$ = cheerio.load(content)
-				title = $('title').text();
-				imgSrc = $('.img-wrap img').attr('src').trim();
+				title = $('title').text()
+				imgSrc = $('.img-wrap img').attr('src').trim()
 
-				question = $('.question-title').text();
+				question = $('.question-title').text()
 
-				answers = $('.answer');
+				answers = $('.answer')
 
 				answersArr = []
 
 				answers.each ()->
-					node = $(this);
-					author = node.find('.meta').text();
-					answerDetail = node.find('.content');
+					node = $(this)
+					author = node.find('.meta').text()
+					answerDetail = node.find('.content')
 
-					solveHelper.zhihuImg(answerDetail);
-					solveHelper.trimAttrs(answerDetail);
+					util.pullOutRealPath(answerDetail)
+					util.trimAttrs(answerDetail)
 
 					answersArr.push
 						author: util.getAuthor(author.trim())
