@@ -8,22 +8,21 @@
 
   _ = require("underscore");
 
-  describe("parser test", function() {
-    it("should parser", function(done) {
+  describe("daily parse test", function() {
+    it("should parse", function(done) {
       var url;
-      url = "http://www.zhihu.com/question/23797702";
+      url = "http://daily.zhihu.com/story/4131277";
       return nodeParser.parse(url, function(err, article) {
         should(err).not.exist;
         _validParserResult(article);
         return done();
       });
     });
-    return it("should parse ok", function(done) {
+    return it("should parse,too", function(done) {
       var url;
-      url = "http://www.zhihu.com/question/25066430";
+      url = "http://daily.zhihu.com/story/4130697";
       return nodeParser.parse(url, function(err, article) {
         should(err).not.exist;
-        article.title.should.be.a.String.and.not.be.empty.and.be.exactly("被迫参加莫名其妙的亲戚聚会和人情往来，如何礼貌地打发时间？");
         _validParserResult(article);
         return done();
       });
@@ -35,7 +34,7 @@
     article.title.should.be.a.String.and.not.be.empty;
     article.question.should.be.a.String.and.not.be.empty;
     article.answers.should.be.an.Array;
-    article.answers.should.matchEach(function(ans) {
+    return article.answers.should.matchEach(function(ans) {
       var hasContent, validAuthor, validAuthorAbout, validAuthorName;
       validAuthor = ans.author.should.have.keys("name", "about");
       validAuthorName = ans.author.name.should.be.a.String.and.not.be.empty;
@@ -43,12 +42,8 @@
       hasContent = ans.content.should.be.a.String.and.not.be.empty;
       return validAuthor && validAuthorName && validAuthorAbout && hasContent;
     });
-    article.tags.should.be.an.Array;
-    return article.tags.should.matchEach(function(tag) {
-      return tag.should.be.a.String.and.not.be.empty;
-    });
   };
 
 }).call(this);
 
-//# sourceMappingURL=question.test.map
+//# sourceMappingURL=daily.test.map
