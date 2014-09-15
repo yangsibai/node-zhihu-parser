@@ -1,6 +1,6 @@
 {
 	"name": "zhihu-parser",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "zhihu question page parser",
 	"main": "lib/index.js",
 	"repository": {

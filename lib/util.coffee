@@ -1,5 +1,4 @@
 request = require("request")
-cheerio = require('cheerio');
 
 ###
     detect url is zhihu question
