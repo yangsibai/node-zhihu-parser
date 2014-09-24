@@ -23,46 +23,41 @@ exports.parse = (url, cb)->
     @param {Function} cb callback function
 ###
 _parseQuestion = (url, cb)->
-	if util.isZhihuQuestion(url)
-		util.download url, (err, content)->
-			if err
-				cb err
-			else
-				$ = cheerio.load(content)
+	util.download url, (err, content)->
+		return cb(err) if err
+		$ = cheerio.load(content)
 
-				title = $('#zh-question-title').text().trim()
-				question = $("#zh-question-detail").html().trim()
+		title = $('#zh-question-title').text().trim()
+		question = $("#zh-question-detail").html().trim()
 
-				tagElems = $(".zm-item-tag")
+		tagElems = $(".zm-item-tag")
 
-				tags = []
-				tagElems.each (i, el)->
-					tags.push $(el).text().trim()
+		tags = []
+		tagElems.each (i, el)->
+			tags.push $(el).text().trim()
 
-				answersArr = []
-				answers = $('.zm-item-answer')
-				answers.each ()->
-					node = $(this)
-					authorInfo = node.find('.zm-item-answer-author-wrap').text().trim()
-					node.find('.toggle-expand').remove()
-					answerDetail = node.find('.zm-editable-content')
+		answersArr = []
+		answers = $('.zm-item-answer')
+		answers.each ()->
+			node = $(this)
+			authorInfo = node.find('.zm-item-answer-author-wrap').text().trim()
+			node.find('.toggle-expand').remove()
+			answerDetail = node.find('.zm-editable-content')
 
-					util.pullOutRealPath(answerDetail)
-					util.trimAttrs(answerDetail)
+			util.pullOutRealPath(answerDetail)
+			util.trimAttrs(answerDetail)
 
-					answersArr.push
-						author: util.getAuthor(authorInfo)
-						content: answerDetail.html().trim()
+			answersArr.push
+				author: util.getAuthor(authorInfo)
+				content: answerDetail.html().trim()
 
-				article =
-					title: title
-					question: question
-					tags: tags
-					answers: answersArr
+		article =
+			title: title
+			question: question
+			tags: tags
+			answers: answersArr
 
-				cb null, article
-	else
-		cb new Error("url #{url} isn't zhihu question page")
+		cb null, article
 
 ###
     parse zhihu daily page
@@ -70,38 +65,33 @@ _parseQuestion = (url, cb)->
     @param {Function} cb callback function
 ###
 _parseDaily = (url, cb)->
-	if util.isZhihuDaily(url)
-		util.download url, (err, content)->
-			if err
-				cb err
-			else
-				$ = cheerio.load(content)
-				title = $('title').text()
-				imgSrc = $('.img-wrap img').attr('src').trim()
+	util.download url, (err, content)->
+		return cb(err) if err
+		$ = cheerio.load(content)
+		title = $('title').text()
+		imgSrc = $('.img-wrap img').attr('src').trim()
 
-				question = $('.question-title').text()
+		question = $('.question-title').text()
 
-				answers = $('.answer')
+		answers = $('.answer')
 
-				answersArr = []
+		answersArr = []
 
-				answers.each ()->
-					node = $(this)
-					author = node.find('.meta').text()
-					answerDetail = node.find('.content')
+		answers.each ()->
+			node = $(this)
+			author = node.find('.meta').text()
+			answerDetail = node.find('.content')
 
-					util.pullOutRealPath(answerDetail)
-					util.trimAttrs(answerDetail)
+			util.pullOutRealPath(answerDetail)
+			util.trimAttrs(answerDetail)
 
-					answersArr.push
-						author: util.getAuthor(author.trim())
-						content: answerDetail.html().trim()
+			answersArr.push
+				author: util.getAuthor(author.trim())
+				content: answerDetail.html().trim()
 
-				article =
-					title: title
-					question: question
-					image: imgSrc
-					answers: answersArr
-				cb null, article
-	else
-		cb new Error("url #{url} isn't zhihu daily page")
+		article =
+			title: title
+			question: question
+			image: imgSrc
+			answers: answersArr
+		cb null, article

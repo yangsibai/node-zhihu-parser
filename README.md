@@ -2,7 +2,7 @@
 
 parse zhihu question page and zhihu daily.
 
-NB: it's beta version now, more test required.
+[![NPM](https://nodei.co/npm/zhihu-parser.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/zhihu-parser/)
 
 ###Start
 
