@@ -9,6 +9,14 @@ _isZhihuQuestion = exports.isZhihuQuestion = (url)->
 	return pattern.test(url)
 
 ###
+    detect url is zhihu topic
+    @param {String} url
+###
+_isZhihuQuestion = exports.isZhihuTopic = (url)->
+	pattern = /zhihu\.com\/topic/i
+	return pattern.test(url)
+
+###
     detect url is zhihu daily
 ###
 _isZhihuDaily = exports.isZhihuDaily = (url)->
@@ -58,6 +66,61 @@ exports.pullOutRealPath = (node, baseUrl)->
 		links = node.find('a')
 		links.each (i, link)->
 			link.attribs['href'] = url.resolve(baseUrl, link.attribs['href']) if link.attribs['href']
+
+###
+   get questions in a topic
+###
+exports.getTopicQuestions = ($, nodes)->
+		questionsArr = []
+		seenUrls = []
+
+		nodes.each ()->
+			node = $(this)
+			qTitle = node.text().trim()
+			qUrl = exports.toAbsolute(node.attr('href'))
+			if seenUrls.indexOf(qUrl) == -1
+				seenUrls.push qUrl
+				questionsArr.push
+					title: qTitle
+					url: qUrl
+		questionsArr = questionsArr
+
+###
+   get questions in a topic
+###
+exports.getTags = ($, nodes)->
+		tags = []
+		nodes.each ()->
+			node = $(this)
+			tags.push
+				title: node.text().trim()
+				url: exports.toAbsolute(node.attr('href'))
+		tags = tags
+
+###
+    get title of a topic
+###
+exports.toAbsolute = (href)->
+	absoluteUrl = "www.zhihu.com" + href
+
+###
+    get title of a topic
+###
+exports.getTopicTitle = (node)->
+	text = node.text().trim()
+	pattern = /^([^\n]*)/
+	matches = text.match(pattern)
+	title = matches[1]
+
+###
+    get follower count
+###
+exports.getFollowerCount = (node)->
+	text = node.text().trim()
+	pattern = /([0-9]*).*人关注/
+	matches = text.match(pattern)
+	followerCount = parseInt(matches[1], 10)
+	
 
 ###
     get author info
