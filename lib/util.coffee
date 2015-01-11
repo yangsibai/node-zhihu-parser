@@ -101,7 +101,7 @@ exports.getTags = ($, nodes)->
     get title of a topic
 ###
 exports.toAbsolute = (href)->
-	absoluteUrl = "www.zhihu.com" + href
+	absoluteUrl = "http://www.zhihu.com" + href
 
 ###
     get title of a topic
@@ -116,9 +116,11 @@ exports.getTopicTitle = (node)->
     get follower count
 ###
 exports.getFollowerCount = (node)->
-	text = node.text().trim()
-	pattern = /([0-9]*).*人关注/
-	matches = text.match(pattern)
+	text = node.text().trim().replace(/(\r\n|\n|\r)/gm, ' ')
+	console.log text
+	pattern = /.*(\d+).*人关注/i
+	matches = pattern.exec(text)
+	console.log matches
 	followerCount = parseInt(matches[1], 10)
 	
 
