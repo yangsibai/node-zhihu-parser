@@ -12,10 +12,36 @@ exports.parse = (url, cb)->
 			_parseDaily url, cb
 		else if util.isZhihuQuestion(url)
 			_parseQuestion url, cb
+		else if util.isZhihuTopic(url)
+			_parseTopic url, cb
 		else
 			cb new Error("url #{url} isn't zhihu daily or zhihu question")
 	else
 		cb new Error("must have a url")
+
+###
+    parse zhihu tags
+    @param {String} url
+    @param {Function} cb callback function
+###
+_parseTopic = (url, cb)->
+	util.download url, (err, content)->
+		return cb(err) if err
+		$ = cheerio.load(content)
+
+		title = util.getTopicTitle($('#zh-topic-title'))
+		followerCount = util.getFollowerCount($('#zh-topic-side-head'))
+ 
+		tagsArr = util.getTags($, $("#zh-topic-side-children-list .zm-item-tag"))
+		questionsArr = util.getTopicQuestions($, $('.question_link'))
+
+		topic =
+			title: title
+			followerCount: followerCount
+			questions: questionsArr
+			childTags: tagsArr
+
+		cb null, topic
 
 ###
     parse zhihu question
@@ -28,8 +54,8 @@ _parseQuestion = (url, cb)->
 		$ = cheerio.load(content)
 
 		title = $('#zh-question-title').text().trim()
+		followerCount = util.getFollowerCount($('#zh-question-side-header-wrap'))
 		question = $("#zh-question-detail").html().trim()
-
 		tagElems = $(".zm-item-tag")
 
 		tags = []
@@ -53,6 +79,7 @@ _parseQuestion = (url, cb)->
 
 		article =
 			title: title
+			followerCount: followerCount
 			question: question
 			tags: tags
 			answers: answersArr
