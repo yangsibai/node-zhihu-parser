@@ -42,7 +42,7 @@ exports.download = (url, cb)->
 exports.trimAttrs = (node)->
     all = node.find("*")
     for n in all
-        proAttrs = ['srv']
+        proAttrs = ['src']
         if n.name isnt "object" and n.name isnt "embed"
             proAttrs.push 'href'
             proAttrs.push 'width' #TODO:图片的宽度高度应该留一个
